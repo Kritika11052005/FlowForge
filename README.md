@@ -2,6 +2,10 @@
 
 **Live Demo:** [Click here to view the deployed app](https://flow-forge-nu.vercel.app/)  
 
+---
+![Recording2025-07-29031647-ezgif com-optimize](https://github.com/user-attachments/assets/582bab3e-0b87-49cc-a6a3-002ceeea5c70)
+
+
 
 ---
 
