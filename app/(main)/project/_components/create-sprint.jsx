@@ -45,12 +45,12 @@ const SprintCreationForm = ({ projectTitle, projectKey, projectId, sprintKey }) 
     const router = useRouter();
 
     // Setup form handling using useForm
-    const { register, handleSubmit, formState: { errors }, control } = useForm({
+    const { register, handleSubmit, formState: { errors }, control, reset } = useForm({
         // zod will validate the form inputs based on schema
         resolver: zodResolver(sprintSchema),
         // Default values for form inputs
         defaultValues: {
-            name: `${projectKey}-${sprintKey}`,  // Automatically generate sprint name
+            name: `${projectKey}-${sprintKey}`,  // Default sprint name (user can edit)
             startDate: dateRange.from,
             endDate: dateRange.to,
         },
@@ -70,6 +70,19 @@ const SprintCreationForm = ({ projectTitle, projectKey, projectId, sprintKey }) 
 
         // Hide the form after successful creation
         setForm(false);
+
+        // Reset form to default values
+        reset({
+            name: `${projectKey}-${sprintKey + 1}`,
+            startDate: new Date(),
+            endDate: addDays(new Date(), 14),
+        });
+
+        // Reset date range
+        setDateRange({
+            from: new Date(),
+            to: addDays(new Date(), 14),
+        });
 
         // Show success message
         toast.success("Sprint Created Successfully!");
@@ -105,14 +118,14 @@ const SprintCreationForm = ({ projectTitle, projectKey, projectId, sprintKey }) 
                         <CardContent>
                             <form className="flex gap-4 items-end" onSubmit={handleSubmit(onSubmit)}>
 
-                                {/* Sprint name input (read-only) */}
+                                {/* Sprint name input (NOW EDITABLE) */}
                                 <div className="flex-1 px-6">
                                     <label htmlFor="name" className="block text-sm font-medium mb-1">
                                         Sprint Name
                                     </label>
                                     <Input
                                         id="name"
-                                        readOnly
+                                        placeholder="Enter sprint name..."
                                         className="bg-slate-950"
                                         {...register("name")}
                                     />

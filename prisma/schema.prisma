@@ -40,16 +40,22 @@ model Project {
 }
 
 model Sprint {
-  id        String   @id @default(cuid())
-  name      String   @unique
+  id String @id @default(cuid())
+  name String // Remove @unique from here
   startDate DateTime
-  endDate   DateTime
-  status    SprintStatus @default(PLANNED)
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  endDate DateTime
+  status SprintStatus @default(PLANNED)
+  
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String
-  issues    Issue[]
+  
+  issues Issue[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  // Add this: makes name unique only within the same project
+  @@unique([projectId, name])
 }
 
 model Issue {
